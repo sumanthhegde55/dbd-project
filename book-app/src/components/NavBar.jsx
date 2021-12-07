@@ -1,11 +1,13 @@
-import React, {useState}from 'react'
+import React, {useContext, useState}from 'react'
 import {AppBar,Toolbar, Typography, Button,makeStyles,Box} from '@material-ui/core';
 import Login from './account/Login';
 import Signup from './account/Signup';
+import { AccountContext } from '../components/context/AccountProvider';
 
 const NavBar = () => {
     const [login,setLogin] = useState({color:'#fffff',status:false});
     const [signup,setSignup] = useState({color:'#fffff',status:false});
+    const {account,setAccount} = useContext(AccountContext);
     console.log(login,signup)
     const classes = makeStyles({
         component:{
@@ -56,14 +58,26 @@ const NavBar = () => {
         setLogin(newlogin);
         setSignup(newsignup);
     }
+    const handleLogout = () =>{
+        setAccount(null);
+    }
     return (
         <>
         <AppBar className ={classes.appbar}>
             <Toolbar>
                 <Typography>BEST-READS</Typography>
                 <Box className = {classes.component}>
-                <Button className={classes.signup} onClick={handleSignup}>Signup</Button> 
-                <Button className={classes.login} onClick={handleLogin}>Login</Button> 
+                    {
+                    account === null? 
+                    <>
+                         <Button className={classes.signup} onClick={handleSignup}>Signup</Button> 
+                         <Button className={classes.login} onClick={handleLogin}>Login</Button>
+                    </> : 
+                    <>
+                        <Button className={classes.signup} onClick={handleSignup}>Search Books</Button> 
+                         <Button className={classes.login} onClick={handleLogout}>Logout</Button>
+                    </>
+                    }
                 </Box>
             </Toolbar>
         </AppBar>
@@ -74,4 +88,3 @@ const NavBar = () => {
 }
 
 export default NavBar
-// depending on if account is there show logout / register-login

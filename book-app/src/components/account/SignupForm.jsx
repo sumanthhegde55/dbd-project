@@ -25,14 +25,15 @@ export default class SignupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fName: null,
-      lName: null,
+      firstName: null,
+      lastName: null,
       email: null,
       password: null,
+      username:null,
       errors: {
         email: "",
         password: "",
-        username: "",
+        username:""
       },
     };
   }
@@ -46,10 +47,6 @@ export default class SignupForm extends Component {
       case "email":
         errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
         break;
-      case "password":
-        errors.password =
-          value.length < 8 ? "Password must be 8 characters long!" : "";
-        break;
       default:
         break;
     }
@@ -62,14 +59,17 @@ export default class SignupForm extends Component {
     if (validateForm(this.state.errors)) {
             try{
                 const user = {
-                    "firstName": this.state.fName,
-                    "lastName" : this.state.lName,
+                    "firstName": this.state.firstName,
+                    "lastName" : this.state.lastName,
                     "email" : this.state.email,
                     "password" : this.state.password,
                 }
-                await axios.post(`http://localhost:3000/add`,user)
-                .then((res) => console.log("response from server : ",res))
-                .catch((err) => console.log("error from server : ",err))
+                // await axios.post(`http://localhost:8000/add`,user)
+                // .then((res) => console.log("response from server : ",res))
+                // .catch((err) => console.log("error from server : ",err))
+                await axios.post('http://localhost:8000/users/add',user)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err))
             }catch(e){
                 console.log("error : ",e);
             }
@@ -105,6 +105,15 @@ export default class SignupForm extends Component {
                 />
               </div>
             </div>
+            <div className="password">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                name="username"
+                onChange={this.handleChange}
+                noValidate
+              />
+            </div>
             <div className="email">
               <label htmlFor="email">Email</label>
               <input
@@ -128,9 +137,6 @@ export default class SignupForm extends Component {
               {errors.password.length > 0 && (
                 <span className="error">{errors.password}</span>
               )}
-            </div>
-            <div className="info">
-              <small>Password must be eight characters in length.</small>
             </div>
             <div className="submit">
               <button>Create</button>

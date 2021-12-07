@@ -1,19 +1,6 @@
 p, div {
     font-family: Lato;
   }
-  
-  /* 
-    Colors:
-    https://coolors.co/22223b-4a4e69-eadae4-9a8c98-c9ada7 
-  */
-  /*
-  YANKEES BLUE: #22223B
-  INDEPENDENCE: #4A4E69
-  PLATINUM: #EADAE4
-  SPANISH GRAY: #9A8C98
-  SILVER PINK: #C9ADA7
-  */
-  
   .wrapper {
     height: 97vh;
     width: 100%;
@@ -30,7 +17,7 @@ p, div {
     width: 280px;
     max-width: 80%;
     min-width: 100px;
-    min-height: 400px;
+    min-height: 300px;
     padding: 20px 40px;
     border-radius: 6px;
     box-shadow: 0px 8px 36px #222;
@@ -41,7 +28,7 @@ p, div {
     display: flex;
     justify-content: center;
     font-family: "Segoe UI", "Ubuntu", "Roboto", "Open Sans", "Helvetica Neue", sans-serif;
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: lighter;
     margin-top: 0.25em;
     color: #222;
@@ -73,7 +60,7 @@ p, div {
   }
   
   input::placeholder {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: lighter;
     color: #bbb;
   }
@@ -115,6 +102,7 @@ p, div {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    font-size: 1em;
   }
   
   .firstName,.lastName {
@@ -141,7 +129,8 @@ p, div {
   .divider{
       margin-left: auto;
       margin-right: auto;
-      padding:5% 0% 3% 0%
+      padding:5% 0% 3% 0%;
+      font-size: 1rem;
   }
   *{
       overflow: hidden;
