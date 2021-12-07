@@ -84,7 +84,7 @@ export default class SignupForm extends Component {
       <div className="wrapper">
         <div className="form-wrapper">
           <h2>Create Account</h2>
-          <form onSubmit={this.handleSubmit} noValidate action={}>
+          <form onSubmit={this.handleSubmit} noValidate>
             <div className="fullName">
               <div className="firstName">
                 <label htmlFor="firstName">First Name</label>
