@@ -59,6 +59,8 @@ const NavBar = () => {
         setSignup(newsignup);
     }
     const handleLogout = () =>{
+        // setTimeout({},500);
+        alert("You have been successfully logged out");
         setAccount(null);
     }
     return (

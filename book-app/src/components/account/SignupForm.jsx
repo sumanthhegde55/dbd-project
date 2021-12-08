@@ -1,39 +1,45 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 import "./style.css";
 import { GoogleLogin } from "react-google-login";
-import { clientId } from "../constants";
+import { clientId, imageUrl } from "../constants";
 import axios from 'axios';
+
 const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 );
-const validateForm = (errors) => {
-  let valid = true;
-  Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
-  return valid;
-};
-
 const onLoginFailure = () => {
   console.log("failed");
 };
-const onLoginSuccess = (res) => {
-  console.log("Login successfull", res.profileObj);
-  // setAccount(res);
+const onLoginSuccess = async (res) => {
+//   console.log("Login successfull", res.profileObj);
+    try{
+        const user = {
+            "firstName": res.profileObj.givenName,
+            "lastName" : res.profileObj.familyName,
+            "email" : res.profileObj.email,
+            "password" : null,
+            "image":res.profileObj.imageUrl,
+        }
+        await axios.post('http://localhost:8000/add',user)
+        .then((res) => alert(res.data))
+        .catch((err) => console.log(err))
+    }catch(e){
+        console.log("error : ",e);
+    }
 };
 
 export default class SignupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: null,
-      lastName: null,
-      email: null,
-      password: null,
-      username:null,
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
       errors: {
         email: "",
         password: "",
-        username:""
+        firstName:""
       },
     };
   }
@@ -44,44 +50,58 @@ export default class SignupForm extends Component {
     let errors = this.state.errors;
 
     switch (name) {
+      case "firstName":
+          errors.firstName = value == "" ? "first name required" : ""; 
+          break;
+      case "password":
+            errors.password = value == "" ? "password required" : ""; 
+            break;
       case "email":
         errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
         break;
       default:
         break;
     }
-
     this.setState({ errors, [name]: value });
   };
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    if (validateForm(this.state.errors)) {
+    let s = "";
+    let i = 0;
+    const errors = this.state.errors;
+    if(this.state.firstName == "") errors.firstName = "first name required";
+    if(this.state.password == "") errors.password = "password required";
+    if(!validEmailRegex.test(this.state.email)) errors.email = "Email is not valid!";
+    this.setState({ errors});
+    Object.entries(errors).forEach(([key,val]) =>{
+        if(val.length != 0) s = s + (++i) + ". " + key + "\n";
+    })
+    if (s === "") {
             try{
                 const user = {
                     "firstName": this.state.firstName,
                     "lastName" : this.state.lastName,
                     "email" : this.state.email,
                     "password" : this.state.password,
+                    "image": {imageUrl},
                 }
-                // await axios.post(`http://localhost:8000/add`,user)
-                // .then((res) => console.log("response from server : ",res))
-                // .catch((err) => console.log("error from server : ",err))
-                await axios.post('http://localhost:8000/users/add',user)
-                .then((res) => console.log(res))
+                await axios.post('http://localhost:8000/add',user)
+                .then((res) => alert(res.data))
                 .catch((err) => console.log(err))
             }catch(e){
                 console.log("error : ",e);
             }
      } else {
-      console.error("Invalid Form");
+      console.log(`Invalid Form\nfollowing are required:\n${s}`);
+      return false;
     }
   };
 
   render() {
     const { errors } = this.state;
     return (
-      <div className="wrapper">
+      <div className="wrapper" style={{height:'auto'}}>
         <div className="form-wrapper">
           <h2>Create Account</h2>
           <form onSubmit={this.handleSubmit} noValidate>
@@ -93,7 +113,11 @@ export default class SignupForm extends Component {
                   name="firstName"
                   onChange={this.handleChange}
                   noValidate
+                  placeholder={this.state.firstName}
                 />
+                {errors.firstName.length > 0 && (
+                <span className="error">{errors.firstName}</span>
+              )}
               </div>
               <div className="lastName">
                 <label htmlFor="lastName">Last Name</label>
@@ -102,17 +126,9 @@ export default class SignupForm extends Component {
                   name="lastName"
                   onChange={this.handleChange}
                   noValidate
+                  placeholder={this.state.lastName}
                 />
               </div>
-            </div>
-            <div className="password">
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                name="username"
-                onChange={this.handleChange}
-                noValidate
-              />
             </div>
             <div className="email">
               <label htmlFor="email">Email</label>
@@ -121,6 +137,7 @@ export default class SignupForm extends Component {
                 name="email"
                 onChange={this.handleChange}
                 noValidate
+                placeholder={this.state.email}
               />
               {errors.email.length > 0 && (
                 <span className="error">{errors.email}</span>
@@ -133,6 +150,7 @@ export default class SignupForm extends Component {
                 name="password"
                 onChange={this.handleChange}
                 noValidate
+                placeholder={this.state.password}
               />
               {errors.password.length > 0 && (
                 <span className="error">{errors.password}</span>
@@ -144,7 +162,7 @@ export default class SignupForm extends Component {
             <div className="divider">OR</div>
             <GoogleLogin
               clientId={clientId}
-              isSignedIn={true}
+              isSignedIn={false}
               buttonText="Sign up with Google"
               onSuccess={onLoginSuccess}
               onFailure={onLoginFailure}

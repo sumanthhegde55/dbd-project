@@ -39,9 +39,7 @@ const LoginForm = () =>{
                     "password" : password,
                 }
                 await axios.post('http://localhost:8000/users',user)
-                .then((res) =>{
-                    if(res.status == 200) setAccount(res.data);
-                })
+                .then((res) => console.log(res))
                 .catch((err) => console.log(err))
             }catch(e){
                 console.log("error : ",e);
