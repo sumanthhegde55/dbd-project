@@ -1,10 +1,13 @@
 import Home from './components/Home';
 import AccountProvider from './components/context/AccountProvider';
+import FunctionsProvider from './components/context/FunctionsProvider';
 const App = () =>{
   return (
-    <AccountProvider>
-      <Home/>
+    <FunctionsProvider>
+      <AccountProvider>
+        <Home/>
     </AccountProvider>
+    </FunctionsProvider>
   );
 }
 

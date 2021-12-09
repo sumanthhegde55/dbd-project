@@ -1,12 +1,16 @@
 import React, {useContext} from 'react'
-// import {AccountContext} from './context/AccountProvider';
-// import Login from './account/Login';
+import { FunctionsContext } from './context/FunctionsProvider';
 import NavBar from './NavBar';
+import Books from './books/Books';
+import Profile from './profile/Profile';
+import { AccountContext } from './context/AccountProvider';
 const Home = () => {
-    // const {account} = useContext(AccountContext);
+    const {books} = useContext(FunctionsContext);
+    const {account} = useContext(AccountContext);
     return (
         <>
             <NavBar/>
+            {account ? books ? <Books/> : <Profile/> : null}
         </>
     )
 }

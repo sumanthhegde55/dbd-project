@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const LoginForm = () =>{
 
-      const {setAccount} = useContext(AccountContext);
+      const {setOpenLogin,setAccount,setOpenSignup} = useContext(AccountContext);
 
       const [email,setemail] = useState("");
       const [password,setpassword] = useState("");
@@ -17,8 +17,17 @@ const LoginForm = () =>{
             console.log("failed");
         };
         const onLoginSuccess = (res) => {
-            console.log("success")
+            alert("Successfully logged in!");
+            console.log(res.profileObj);
+            const user = {
+              f_name : res.profileObj.givenName,
+              l_name : res.profileObj.familyName,
+              e_mail : res.profileObj.email,
+              
+            }
             setAccount(res.profileObj);
+            setOpenLogin(false)
+            setOpenSignup(false) // not required just to be safe set to false
         };
 
         const handleChange = (event) => {
@@ -39,11 +48,18 @@ const LoginForm = () =>{
                     "password" : password,
                 }
                 await axios.post('http://localhost:8000/users',user)
-                .then((res) => console.log(res))
+                .then((res) => {
+                  if(res != {}){
+                    alert("Successfully logged in!");
+                    setAccount(res)
+                  }
+                })
                 .catch((err) => console.log(err))
             }catch(e){
                 console.log("error : ",e);
             }
+            setOpenLogin(false);
+            setOpenSignup(false); // not required just to be safe set to false
         };
     return (
       <div className="wrapper" style={{height:'auto'}}>

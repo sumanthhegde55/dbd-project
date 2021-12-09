@@ -3,11 +3,14 @@ import {AppBar,Toolbar, Typography, Button,makeStyles,Box} from '@material-ui/co
 import Login from './account/Login';
 import Signup from './account/Signup';
 import { AccountContext } from '../components/context/AccountProvider';
-
+import { FunctionsContext } from './context/FunctionsProvider';
+import Books from './books/Books';
+import Profile from './profile/Profile';
 const NavBar = () => {
     const [login,setLogin] = useState({color:'#fffff',status:false});
     const [signup,setSignup] = useState({color:'#fffff',status:false});
-    const {account,setAccount} = useContext(AccountContext);
+    const {account,setAccount,setOpenSignup,setOpenLogin} = useContext(AccountContext);
+    const {books,setBooks} = useContext(FunctionsContext);
     console.log(login,signup)
     const classes = makeStyles({
         component:{
@@ -44,6 +47,7 @@ const NavBar = () => {
         }
         setSignup(newsignup);
         setLogin(newlogin);
+        setOpenSignup(true);
     }
     const handleLogin = () =>{
         const newsignup = {...signup,
@@ -57,9 +61,12 @@ const NavBar = () => {
         }
         setLogin(newlogin);
         setSignup(newsignup);
+        setOpenLogin(true);
     }
     const handleLogout = () =>{
         // setTimeout({},500);
+        setOpenSignup(false);
+        setOpenLogin(false);
         alert("You have been successfully logged out");
         setAccount(null);
     }
@@ -76,7 +83,8 @@ const NavBar = () => {
                          <Button className={classes.login} onClick={handleLogin}>Login</Button>
                     </> : 
                     <>
-                        <Button className={classes.signup} onClick={handleSignup}>Search Books</Button> 
+                         <Button className={classes.signup} onClick={()=>setBooks(true)}>Books</Button> 
+                         <Button className={classes.profile} onClick = {() =>setBooks(false)}> Profile</Button>
                          <Button className={classes.login} onClick={handleLogout}>Logout</Button>
                     </>
                     }

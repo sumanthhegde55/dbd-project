@@ -1,14 +1,15 @@
 const express = require('express');
 const route = express.Router();
 
+let s;
 route.post('/add',(req,res)=>{
     console.log(req.body);
-    const str = 'your name is :' + req.body.firstName + req.body.lastName
-    res.status(200).send(str);
+    s = req.body.data;
+    res.status(200).send("registered.please login");
 })
 route.post('/users',(req,res)=>{
-    console.log(req.body);
-    res.status(200).send(req.body);
+    // console.log(req.body);
+    res.status(200).send(s);
 })
 // const getUsers = (req,res) =>{
 //     const users = {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./style.css";
 import { GoogleLogin } from "react-google-login";
-import { clientId, imageUrl } from "../constants";
+import { clientId } from "../constants";
 import axios from 'axios';
 
 const validEmailRegex = RegExp(
@@ -84,7 +84,7 @@ export default class SignupForm extends Component {
                     "lastName" : this.state.lastName,
                     "email" : this.state.email,
                     "password" : this.state.password,
-                    "image": {imageUrl},
+                    "image":'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-7.jpg',
                 }
                 await axios.post('http://localhost:8000/add',user)
                 .then((res) => alert(res.data))
@@ -92,6 +92,7 @@ export default class SignupForm extends Component {
             }catch(e){
                 console.log("error : ",e);
             }
+            
      } else {
       console.log(`Invalid Form\nfollowing are required:\n${s}`);
       return false;
