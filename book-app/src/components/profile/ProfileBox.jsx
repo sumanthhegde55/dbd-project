@@ -33,7 +33,7 @@ const ProfileBox = () => {
         }
     };
     const handleSubmit = () =>{
-        if(!validEmailRegex.test(email) || firstName.length === 0 || lastName.length === 0) {
+        if(!validEmailRegex.test(email) || firstName.length === 0) {
           alert("invalid update!!!");
           return false; 
         }

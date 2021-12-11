@@ -83,7 +83,7 @@ const NavBar = () => {
                     </> : 
                     <>
                          <Button className={classes.signup} onClick={()=>setBooks(true)}>Books</Button> 
-                         <Button className={classes.profile} onClick = {() =>setBooks(false)}> Profile</Button>
+                         <Button className={classes.profile} onClick = {() =>setBooks(false)}> My Lists</Button>
                          <Button className={classes.login} onClick={handleProfile}>
                              <img src = {account.image} alt="profile" style={{height: '50px',borderRadius: '50%',right:'auto',width:'50px'}}/>
                          </Button>
