@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const LoginForm = () =>{
 
-      const {setOpenLogin,setAccount,setOpenSignup} = useContext(AccountContext);
+      const {setAccount,setOpenLogin,setOpenSignup} = useContext(AccountContext);
 
       const [email,setemail] = useState("");
       const [password,setpassword] = useState("");
@@ -17,17 +17,31 @@ const LoginForm = () =>{
             console.log("failed");
         };
         const onLoginSuccess = (res) => {
-            alert("Successfully logged in!");
-            console.log(res.profileObj);
-            const user = {
-              f_name : res.profileObj.givenName,
-              l_name : res.profileObj.familyName,
-              e_mail : res.profileObj.email,
-              
-            }
-            setAccount(res.profileObj);
-            setOpenLogin(false)
-            setOpenSignup(false) // not required just to be safe set to false
+            // console.log("success")
+            // try{
+            //   await axios.post('http://localhost:3002/login',res.profileObj)
+            //   .then((result) => {
+            //           // console.log(res);
+            //           if(result.data === '') alert("invalid login");
+            //           else{
+            //               console.log(result.data);
+            //               alert("Successfully logged in!");
+            //               setAccount(res.profileObj);
+            //           }
+            //   })
+          //     .catch((err) => console.log(err))
+          // }catch(e){
+          //     console.log("error : ",e);
+          // }
+          let user = {
+            f_name : res.profileObj.givenName,
+            l_name : res.profileObj.familyName,
+            e_mail : res.profileObj.email,
+            image : res.profileObj.imageUrl
+          }
+          setAccount(user);
+          setOpenLogin(false);
+          setOpenSignup(false);
         };
 
         const handleChange = (event) => {
@@ -42,24 +56,34 @@ const LoginForm = () =>{
 
         const handleSubmit = async (event) => {
             event.preventDefault();
-            try{
-                const user = {
-                    "email" : email,
-                    "password" : password,
-                }
-                await axios.post('http://localhost:8000/users',user)
-                .then((res) => {
-                  if(res != {}){
-                    alert("Successfully logged in!");
-                    setAccount(res)
-                  }
-                })
-                .catch((err) => console.log(err))
-            }catch(e){
-                console.log("error : ",e);
+            // try{
+                // const user = {
+                //     "email" : email,
+                //     "password" : password,
+                // }
+            //     await axios.post('http://localhost:3002/login',user)
+            //     .then((res) => {
+            //             console.log(res);
+            //             if(res.data === '') alert("invalid login");
+            //             else{
+            //                 console.log(res);
+            //                 setAccount(res);
+            //                 alert("Successfully logged in!");
+            //             }
+            //     })
+            //     .catch((err) => console.log(err))
+            // }catch(e){
+            //     console.log("error : ",e);
+            // }
+            const user = {
+              f_name : "aaa",
+              l_name : "bbb",
+              e_mail : "ccc",
+              image : "https://icon-library.com/images/no-user-image-icon/no-user-image-icon-7.jpg"
             }
+            setAccount(user);
             setOpenLogin(false);
-            setOpenSignup(false); // not required just to be safe set to false
+            setOpenSignup(false);
         };
     return (
       <div className="wrapper" style={{height:'auto'}}>
@@ -72,7 +96,7 @@ const LoginForm = () =>{
                 type="email"
                 name="email"
                 onChange={handleChange}
-                noValidate
+                // noValidate
               />
               {errors.email.length > 0 && (
                 <span className="error">{errors.email}</span>
@@ -84,7 +108,7 @@ const LoginForm = () =>{
                 type="password"
                 name="password"
                 onChange={handleChange}
-                noValidate
+                // noValidate
               />
               {errors.password.length > 0 && (
                 <span className="error">{errors.password}</span>
@@ -107,4 +131,4 @@ const LoginForm = () =>{
       </div>
     );
 }
-export default LoginForm;
+export default LoginForm

@@ -9,9 +9,9 @@ import Profile from './profile/Profile';
 const NavBar = () => {
     const [login,setLogin] = useState({color:'#fffff',status:false});
     const [signup,setSignup] = useState({color:'#fffff',status:false});
-    const {account,setAccount,setOpenSignup,setOpenLogin} = useContext(AccountContext);
+    const {account,setAccount,setOpenSignup,setOpenLogin,setProfile,profile} = useContext(AccountContext);
     const {books,setBooks} = useContext(FunctionsContext);
-    console.log(login,signup)
+    console.log(account);
     const classes = makeStyles({
         component:{
             display:'flex',
@@ -63,12 +63,11 @@ const NavBar = () => {
         setSignup(newsignup);
         setOpenLogin(true);
     }
-    const handleLogout = () =>{
+    const handleProfile = () =>{
         // setTimeout({},500);
         setOpenSignup(false);
         setOpenLogin(false);
-        alert("You have been successfully logged out");
-        setAccount(null);
+        setProfile(true);
     }
     return (
         <>
@@ -85,7 +84,9 @@ const NavBar = () => {
                     <>
                          <Button className={classes.signup} onClick={()=>setBooks(true)}>Books</Button> 
                          <Button className={classes.profile} onClick = {() =>setBooks(false)}> Profile</Button>
-                         <Button className={classes.login} onClick={handleLogout}>Logout</Button>
+                         <Button className={classes.login} onClick={handleProfile}>
+                             <img src = {account.image} alt="profile" style={{height: '50px',borderRadius: '50%',right:'auto',width:'50px'}}/>
+                         </Button>
                     </>
                     }
                 </Box>
@@ -93,6 +94,7 @@ const NavBar = () => {
         </AppBar>
         {signup.status ? <Signup signup={signup} setSignup={setSignup}/> : null};
         {login.status ? <Login login={login} setLogin={setLogin} /> : null};
+        {profile ? <Profile/> : null};
         </>
     )
 }

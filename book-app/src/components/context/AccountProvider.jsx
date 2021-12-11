@@ -6,6 +6,7 @@ const AccountProvider = ({children}) => {
     const [account,setAccount] = useState(null);
     const [openSignup,setOpenSignup] = useState(false);
     const [openLogin,setOpenLogin] = useState(false);
+    const [profile,setProfile] = useState(false);
     // console.log(account);
     return (
         <AccountContext.Provider value={{
@@ -14,7 +15,9 @@ const AccountProvider = ({children}) => {
             openLogin,
             setOpenLogin,
             setOpenSignup,
-            openSignup
+            openSignup,
+            setProfile,
+            profile
         }}>
             {children}
         </AccountContext.Provider>

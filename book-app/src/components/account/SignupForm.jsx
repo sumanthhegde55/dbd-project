@@ -4,28 +4,29 @@ import { GoogleLogin } from "react-google-login";
 import { clientId } from "../constants";
 import axios from 'axios';
 
-const validEmailRegex = RegExp(
+export const validEmailRegex = RegExp(
   /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 );
 const onLoginFailure = () => {
   console.log("failed");
 };
-const onLoginSuccess = async (res) => {
-//   console.log("Login successfull", res.profileObj);
-    try{
-        const user = {
-            "firstName": res.profileObj.givenName,
-            "lastName" : res.profileObj.familyName,
-            "email" : res.profileObj.email,
-            "password" : null,
-            "image":res.profileObj.imageUrl,
-        }
-        await axios.post('http://localhost:8000/add',user)
-        .then((res) => alert(res.data))
-        .catch((err) => console.log(err))
-    }catch(e){
-        console.log("error : ",e);
-    }
+const onLoginSuccess = (res) => {
+  console.log("Login successfull", res.profileObj);
+    // try{
+    //     const user = {
+    //         "firstName": res.profileObj.givenName,
+    //         "lastName" : res.profileObj.familyName,
+    //         "email" : res.profileObj.email,
+    //         "password" : null,
+    //         "image":res.profileObj.imageUrl,
+    //     }
+    //     console.log(user.password,typeof(user.password));
+    //     await axios.post('http://localhost:3002/signup',user)
+    //     .then((res) => alert(res.data))
+    //     .catch((err) => console.log(err))
+    // }catch(e){
+    //     console.log("error : ",e);
+    // }
 };
 
 export default class SignupForm extends Component {
@@ -35,7 +36,7 @@ export default class SignupForm extends Component {
       firstName: "",
       lastName: "",
       email: "",
-      password: "",
+      password: null,
       errors: {
         email: "",
         password: "",
@@ -51,10 +52,10 @@ export default class SignupForm extends Component {
 
     switch (name) {
       case "firstName":
-          errors.firstName = value == "" ? "first name required" : ""; 
+          errors.firstName = value == "" ? "first name required" : "";
           break;
       case "password":
-            errors.password = value == "" ? "password required" : ""; 
+            errors.password = value == "" ? "password required" : "";
             break;
       case "email":
         errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
@@ -83,16 +84,15 @@ export default class SignupForm extends Component {
                     "firstName": this.state.firstName,
                     "lastName" : this.state.lastName,
                     "email" : this.state.email,
-                    "password" : this.state.password,
-                    "image":'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-7.jpg',
+                    "password" : this.state.password === "" ? null : this.state.password,
+                    "image": 'http://shift.tools/assets/icons/general-user-b0d8abffed32297721ea9c0e12b96cbc08da894ce401d233f9c955a25edbc3c4.png',
                 }
-                await axios.post('http://localhost:8000/add',user)
+                await axios.post('http://localhost:3002/signup',user)
                 .then((res) => alert(res.data))
                 .catch((err) => console.log(err))
             }catch(e){
                 console.log("error : ",e);
             }
-            
      } else {
       console.log(`Invalid Form\nfollowing are required:\n${s}`);
       return false;
